@@ -1,26 +1,19 @@
 import express from 'express';
-import mongoose, { Mongoose } from 'mongoose';
+import mongoose from 'mongoose';
 import config from './config';
+import { apiRouter } from './routes/api.routes';
+
 
 const app = express();
-
 app.use(express.json());
+app.use(apiRouter);
 
-app.get('/',(req, res) =>{
-    res.status(200).json({
-        message: 'Conseguimos criar um servidor Express'
-    });
-});
 
-app.listen(config.PORT, async() => {
-    console.log('Server funcionando na porta: ',config.PORT);
+app.listen(config.PORT, async () => {
+    console.log('Server funcionando na porta: ', config.PORT);
     
     mongoose.connect(config.MONGO_URI);
 
-    const conn = await mongoose.createConnection(config.MONGO_URI);
-
-    console.log(conn.getClient);
-
-    console.log('OK');
-    
+    console.log('ok');
 });
+

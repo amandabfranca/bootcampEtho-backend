@@ -1,4 +1,4 @@
-import { Document, Schema, model } from 'mongoose';
+/*import { Document, Schema, model } from 'mongoose';
 
 interface MovieDocument {
     name: string;
@@ -35,10 +35,10 @@ const MovieSchema = new Schema(
         /*
         createdAt: Date
         updatedAt: Date
-        */
+        
     }
 );
 
 const Movie = model<MovieDocument>("Movie", MovieSchema);
 
-export { Movie };
+export { Movie };*/
