@@ -1,9 +1,8 @@
 import { Router } from 'express';
-import { User} from '../models/user.models';
-
-//import { config } from;
-//import * as userController from '../controllers/user.controller';
-//import * as sessionController from '../controllers/session.controller';
+import * as userController from '../controllers/user.controller';
+import * as sessionController from '../controllers/session.controller';
+import * as movieController from '../controllers/movie.controller';
+import { authorize } from '../middlewares/auth';
 
 const apiRouter = Router();
 
@@ -15,35 +14,24 @@ apiRouter.get('/', (req, res) => {
     });
 });
 
-/* ROTAS DE USUÁRIO*/ 
+/* ROTAS DE USUÁRIO */
 
-apiRouter.post('/users/new', (req, res) => {
-    const {name, email, password} = req.body;
+apiRouter.post('/users/new', userController.create);
+apiRouter.get('/users/id/:id', userController.view);
+apiRouter.delete('/users/destroy/:id', userController.destroy);
 
-    const user = new User({name, email, password});
-
-    user.save((error: any, result: any): void => {
-        if (error) {
-            console.log('Error: ', typeof error);
-            res.json(error);
-
-        }
-
-        console.log('Result: ', typeof result);
-
-        res.status(201).json(result);
-    });
-    
-   });
-
-//apiRouter.get('/users/id/:id', userController.view);
-//apiRouter.delete('/users/destroy/:id', userController.destroy);
 
 /* ROTAS DE SESSÃO */
 
-//apiRouter.post('/users/new', sessionController.create);
+apiRouter.get('/session', authorize, sessionController.index);
+apiRouter.post('/session/new', sessionController.create);
 
 /* ROTAS DE FILME */
+
+apiRouter.get('/movies', movieController.index);
+apiRouter.get('/movies/id/:id', movieController.view);
+apiRouter.get('/movies/search/:search', movieController.search);
+apiRouter.post('/movies/new', movieController.create);
 
 /* ROTAS DE LISTA */
 

@@ -8,7 +8,7 @@ interface UserResult {
     password?: string;
 }
 
-function view(req: Request, res: Response) {
+async function view(req: Request, res: Response) {
     const { id } = req.params;
 
     if (!id) {
@@ -17,25 +17,47 @@ function view(req: Request, res: Response) {
         });
     }
 
-    User.findById(id,
-        (
-        error: Error | string | undefined,
-        result: UserResult
-        ) => {
+    const user = await User.findById(id);
 
+    if (!user) {
+        return res.status(404).json({
+            message: 'Usuário não encontrado'
+        });
+    }
+
+    return res.status(200).json({
+        user: {
+            id: user._id,
+            name: user.name
+        }
+    });
+}
+
+async function create(req: Request, res: Response) {
+    const { name, email, password } = req.body;
+
+    const userExists = await User.findOne({ email });
+
+    if (userExists) {
+        return res.status(403).json({
+            message: 'Usuário já cadastrado'
+        });
+    }
+
+    const user = new User({ name, email, password });
+
+    user.save((error: any, result: any): void => {
         if (error) {
-            console.log(error);
-            res.status(500).json(error);
+            console.log('Error: ', typeof error);
+            res.json(error);
         }
 
-        console.log('Result: ', typeof result);
-
-        return res.status(200).json({
-            user: {
+        res.status(201).json(
+            {
                 id: result._id,
                 name: result.name
             }
-        })
+        );
     });
 }
 
@@ -63,4 +85,4 @@ async function destroy(req: Request, res: Response) {
     });
 }
 
-export { view, destroy };
+export { view, create, destroy };
