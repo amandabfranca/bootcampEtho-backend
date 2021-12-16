@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import fs from 'fs';
 import axios from 'axios';
-import { Movie } from '../models/movie.models';
+import { Movie } from '../models/movie.model';
 
 const URL_MOVIES = 'https://api.themoviedb.org/3/trending/all/week?api_key=8c9751844a68e8e7105d68bd90f6eb25';
 

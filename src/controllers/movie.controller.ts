@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Movie } from '../models/movie.models';
+import { Movie } from '../models/movie.model';
 import { paginate } from '../middlewares/pagination';
 
 function index(req: Request, res: Response) {
